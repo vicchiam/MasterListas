@@ -66,4 +66,29 @@
             android:textSize="14dp" />
 
     </android.support.design.widget.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/recordarme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recordarme"
+        android:textSize="12dp"
+        android:textColor="@android:color/darker_gray"
+        android:onClick="loguearCheckbox"
+        app:layout_constraintTop_toBottomOf="@+id/til_contraseña"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <CheckBox
+        android:id="@+id/mostrar_contraseña"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mostrar contraseña"
+        android:textSize="12dp"
+        android:textColor="@android:color/darker_gray"
+        android:onClick="mostrarContraseña"
+        app:layout_constraintLeft_toRightOf="@+id/recordarme"
+        app:layout_constraintTop_toTopOf="@+id/recordarme"
+        android:layout_marginLeft="8dp"/>
+
 </android.support.constraint.ConstraintLayout>
