@@ -1,5 +1,6 @@
 package org.example.masterlistas;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,15 @@ public class InicioSesionActivity extends AppCompatActivity {
 
     public void acceder (View view){
         Intent intent = new Intent(this, ListasActivity.class);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
+
+    public void registro (View view){
+        EditText usuario = (EditText) findViewById(R.id.usuario);
+        Intent intent = new Intent(this, RegistroActivity.class);
+        if(usuario.getText().toString().contains("@")){
+            intent.putExtra("mail",usuario.getText().toString());
+        }
         startActivity(intent);
     }
 
