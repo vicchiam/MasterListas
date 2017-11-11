@@ -33,6 +33,9 @@
         <!--<item name="android:windowAllowReturnTransitionOverlap">false</item>-->
 
 
+        <!-- Para elementos comparticos -->
+        <item name="android:windowSharedElementEnterTransition">@transition/transition_curva </item>
+        <item name="android:windowSharedElementExitTransition"> @transition/transition_curva </item>
 
     </style>
 

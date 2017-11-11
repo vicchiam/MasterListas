@@ -99,7 +99,8 @@
         app:elevation="6dp"
         app:rippleColor="#616161"
         android:clickable="true"
-        android:src="@drawable/fab_plus"/>
+        android:src="@drawable/fab_plus"
+        android:transitionName ="@string/transition_name_boton"/>
 
     <!-- Icono imagen
      android:src="@drawable/ic_add_white_24dp" -->

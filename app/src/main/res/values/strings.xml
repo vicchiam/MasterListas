@@ -6,5 +6,6 @@
 
     <!--Transicion-->
     <string name="transition_name_img">transition:IMG</string>
+    <string name="transition_name_boton">transition:BUTTON</string>
 
 </resources>
