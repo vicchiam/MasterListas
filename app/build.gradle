@@ -32,4 +32,7 @@ dependencies {
     //****** Externas *******************************************
     compile 'com.mxn.soul:flowingdrawer-core:2.0.0'
     compile 'com.nineoldandroids:library:2.4.0'
+
+    //****** Awesome Android UI *******************************************
+    compile 'tyrantgit:explosionfield:1.0.1'
 }

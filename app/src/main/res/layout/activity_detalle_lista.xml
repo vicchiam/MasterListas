@@ -5,27 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/detail_toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_collapseMode="pin"
-        android:background="@color/colorPrimary"
-        android:title=""
-        android:titleTextColor="#fff">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imagen"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/trabajo"
-            android:layout_alignParentStart="true"
-            android:layout_margin="3dp"
-            android:layout_marginLeft="36dp"
-            android:transitionName ="@string/transition_name_img"/>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/detail_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            android:background="@color/colorPrimary"
+            android:title=""
+            android:titleTextColor="#fff">
 
-    </android.support.v7.widget.Toolbar>
+            <ImageView
+                android:id="@+id/imagen"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/trabajo"
+                android:layout_alignParentStart="true"
+                android:layout_margin="3dp"
+                android:layout_marginLeft="36dp"
+                android:transitionName ="@string/transition_name_img"/>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -38,5 +44,20 @@
         android:clickable="true"
         android:src="@drawable/fab_plus"
         android:transitionName ="@string/transition_name_boton"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ImageView
+            android:id="@+id/img_apple"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/apple"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

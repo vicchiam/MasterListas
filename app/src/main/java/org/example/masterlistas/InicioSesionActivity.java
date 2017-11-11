@@ -25,7 +25,7 @@ public class InicioSesionActivity extends AppCompatActivity {
     }
 
     public void mostrarContraseña(View v) {
-        EditText contraseña = (EditText) findViewById(R.id.contraseña);
+        EditText contraseña = (EditText) findViewById(R.id.contrasena);
         CheckBox mostrar = (CheckBox) findViewById(R.id.mostrar_contraseña);
         if (mostrar.isChecked()) {
             contraseña.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
@@ -51,7 +51,7 @@ public class InicioSesionActivity extends AppCompatActivity {
 
     public void borrarCampos (View view){
         EditText usuario = (EditText) findViewById(R.id.usuario);
-        EditText contraseña = (EditText) findViewById(R.id.contraseña);
+        EditText contraseña = (EditText) findViewById(R.id.contrasena);
         usuario.setText("");
         contraseña.setText("");
         usuario.requestFocus();
