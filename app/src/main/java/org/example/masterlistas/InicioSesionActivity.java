@@ -20,7 +20,7 @@ public class InicioSesionActivity extends AppCompatActivity {
 
     public void loguearCheckbox(View v) {
         CheckBox recordarme= (CheckBox) findViewById(R.id.recordarme);
-        String s = "Recordar datos de usuario: " + (recordarme.isChecked() ? "Sí" : "No");
+        String s = getString(R.string.recordar_datos_usuario) + (recordarme.isChecked() ? getString(android.R.string.yes) : getString(android.R.string.no));
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
 

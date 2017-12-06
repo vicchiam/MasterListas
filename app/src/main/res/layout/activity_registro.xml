@@ -25,7 +25,7 @@
             android:id="@+id/titulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Registro de nuevo usuario"
+            android:text="@string/registro_nuevo_usuario"
             app:layout_constraintTop_toBottomOf="@+id/logo"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="16dp" />
@@ -44,7 +44,7 @@
                 android:id="@+id/nombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre"
+                android:hint="@string/nombre"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:textSize="14dp" />
@@ -65,7 +65,7 @@
                 android:id="@+id/apellidos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Apellidos"
+                android:hint="@string/apellidos"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:textSize="14dp" />
@@ -86,7 +86,7 @@
                 android:id="@+id/correo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Correo electrónico"
+                android:hint="@string/correo_electronico"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:textSize="14dp" />
@@ -107,7 +107,7 @@
                 android:id="@+id/til_sexo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sexo"
+                android:text="@string/sexo"
                 android:layout_marginTop="6dp"/>
 
             <RadioGroup
@@ -121,14 +121,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:checked="true"
-                    android:text="Hombre"/>
+                    android:text="@string/hombre"/>
 
                 <RadioButton
                     android:id="@+id/radioButtonFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:text="Mujer"/>
+                    android:text="@string/mujer"/>
 
             </RadioGroup>
 
@@ -138,7 +138,7 @@
             android:id="@+id/butt_registrar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Registrar"
+            android:text="@string/registrar"
             android:clickable="true"
             android:background="@drawable/ripple"
             android:textColor="@android:color/white"
@@ -153,7 +153,7 @@
             android:id="@+id/butt_cancelar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Cancelar"
+            android:text="@string/cancelar"
             android:clickable="true"
             android:background="@drawable/ripple"
             android:textColor="@android:color/white"

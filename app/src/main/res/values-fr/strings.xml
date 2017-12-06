@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">MasterListes</string>
+
+    <string name="drawer_open">navigation drawer ouvert</string>
+    <string name="drawer_close">navigation drawer fermé</string>
+    <string name="iniciar_sesion">Commencer la session</string>
+    <string name="nombre_usuario">Nom d`utilisateur ou email</string>
+    <string name="contrase_a">Mot de passe</string>
+    <string name="recordarme">Ne pas oublier</string>
+    <string name="mostrar_contrase_a">Afficher le mot de passe</string>
+    <string name="borrar">Effacer</string>
+    <string name="he_olvidado_mi_contrase_a">J`AI OUBLIÉ MON MOT DE PASSE</string>
+    <string name="quiero_registrarme_en_la_aplicaci_n">JE VEUX M`ENREGISTRER SUR L`APPLICATION</string>
+    <string name="iniciar_sesi_n_con_facebook">Connectez-vous avec Facebook</string>
+    <string name="iniciar_sesi_n_con_google">Connectez-vous avec Google</string>
+    <string name="recordar_datos_usuario">Enregistrer les données de l`utilisateur:</string>
+    <string name="listas_disponiobles">Disponiobles listes dans les listes d`application Master</string>
+    <string name="lista_trabajo">Travail</string>
+    <string name="lista_personal">Privé</string>
+    <string name="elements">Eléments:</string>
+    <string name="registro_nuevo_usuario">Enregistrement d`un nouvel utilisateur</string>
+    <string name="nombre">Nom</string>
+    <string name="apellidos">Le nom </string>
+    <string name="correo_electronico">Courriel</string>
+    <string name="sexo">Sexe</string>
+    <string name="hombre">Homme</string>
+    <string name="mujer">Femme</string>
+    <string name="registrar">S`inscrire</string>
+    <string name="cancelar">Annuler</string>
+
+
+</resources>

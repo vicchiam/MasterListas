@@ -1,11 +1,35 @@
 <resources>
-    <string name="app_name">Listas</string>
+    <string name="app_name">MasterLists</string>
 
-    <string name="drawer_open">navigation drawer abierto</string>
-    <string name="drawer_close">navigation drawer cerrado</string>
+    <string name="drawer_open">navigation drawer open</string>
+    <string name="drawer_close">navigation drawer close</string>
 
     <!--Transicion-->
     <string name="transition_name_img">transition:IMG</string>
     <string name="transition_name_boton">transition:BUTTON</string>
+    <string name="iniciar_sesion">Log in</string>
+    <string name="nombre_usuario">Username or mail</string>
+    <string name="contrase_a">Password</string>
+    <string name="recordarme">Remember</string>
+    <string name="mostrar_contrase_a">Show password</string>
+    <string name="borrar">Erase</string>
+    <string name="he_olvidado_mi_contrase_a">FORGET MY PASSWORD</string>
+    <string name="quiero_registrarme_en_la_aplicaci_n">I LIKE REGISTER IN APP</string>
+    <string name="iniciar_sesi_n_con_facebook">Start session with Facebook</string>
+    <string name="iniciar_sesi_n_con_google">Start session with Google</string>
+    <string name="recordar_datos_usuario">Remeber data user:</string>
+    <string name="listas_disponiobles">Lists available in app Master Lists</string>
+    <string name="lista_trabajo">Work</string>
+    <string name="lista_personal">Personal</string>
+    <string name="elements">Elementos:</string>
+    <string name="registro_nuevo_usuario">Register new user</string>
+    <string name="nombre">Name</string>
+    <string name="apellidos">Subname</string>
+    <string name="correo_electronico">Email</string>
+    <string name="sexo">Sex</string>
+    <string name="hombre">Male</string>
+    <string name="mujer">Female</string>
+    <string name="registrar">Register</string>
+    <string name="cancelar">Cancel</string>
 
 </resources>

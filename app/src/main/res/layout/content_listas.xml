@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
-                android:text="Listas disponiobles en la aplicación Master Listas"
+                android:text="@string/listas_disponiobles"
                 android:textColor="#fff"
                 android:textSize="14sp" />
 

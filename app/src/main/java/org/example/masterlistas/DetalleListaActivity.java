@@ -27,10 +27,10 @@ public class DetalleListaActivity extends AppCompatActivity {
 
         ImageView imageView = (ImageView) findViewById(R.id.imagen);
         if (numeroLista == 0) {
-            toolbar.setTitle("Trabajo");
+            toolbar.setTitle(R.string.lista_trabajo);
             imageView.setImageResource(R.drawable.trabajo);
         } else {
-            toolbar.setTitle("Personal");
+            toolbar.setTitle(R.string.lista_personal);
             imageView.setImageResource(R.drawable.casa);
         }
 

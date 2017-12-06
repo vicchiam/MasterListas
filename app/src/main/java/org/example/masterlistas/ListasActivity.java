@@ -61,7 +61,7 @@ public class ListasActivity extends AppCompatActivity /*implements NavigationVie
         lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
         // Crear un nuevo adaptador
-        adapter = new ListaAdapter(items); recycler.setAdapter(adapter);
+        adapter = new ListaAdapter(this,items); recycler.setAdapter(adapter);
 
         /*
         recycler.addOnItemTouchListener(

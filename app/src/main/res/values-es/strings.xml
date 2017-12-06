@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MasterListas</string>
+
+    <string name="drawer_open">navigation drawer abierto</string>
+    <string name="drawer_close">navigation drawer cerrado</string>
+    <string name="iniciar_sesion">Iniciar sesión</string>
+    <string name="nombre_usuario">Nombre de usuario o correo</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="recordarme">Recordarme</string>
+    <string name="mostrar_contrase_a">Mostrar contraseña</string>
+    <string name="borrar">Borrar</string>
+    <string name="he_olvidado_mi_contrase_a">HE OLVIDADO MI CONTRASEÑA</string>
+    <string name="quiero_registrarme_en_la_aplicaci_n">QUIERO REGISTRARME EN LA APLICACIÓN</string>
+    <string name="iniciar_sesi_n_con_facebook">Iniciar sesión con Facebook</string>
+    <string name="iniciar_sesi_n_con_google">Iniciar sesión con Google</string>
+    <string name="recordar_datos_usuario">Recordar datos de usuario:</string>
+    <string name="listas_disponiobles">Listas disponiobles en la aplicación Master Listas</string>
+    <string name="lista_trabajo">Trabajo</string>
+    <string name="lista_personal">Personal</string>
+    <string name="elements">Elementos:</string>
+    <string name="registro_nuevo_usuario">Registro de nuevo usuario</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="correo_electronico">Correo electrónico</string>
+    <string name="sexo">Sexo</string>
+    <string name="hombre">Hombre</string>
+    <string name="mujer">Mujer</string>
+    <string name="registrar">Registrar</string>
+    <string name="cancelar">Cancelar</string>
+
+
+</resources>
