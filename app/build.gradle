@@ -16,6 +16,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -35,4 +36,11 @@ dependencies {
 
     //****** Awesome Android UI *******************************************
     compile 'tyrantgit:explosionfield:1.0.1'
+
+    //****** Firebase *****************************************************
+    compile 'com.google.firebase:firebase-core:11.4.2'
 }
+
+//****** Firebase *****************************************************
+apply plugin: 'com.google.gms.google-services'
+
