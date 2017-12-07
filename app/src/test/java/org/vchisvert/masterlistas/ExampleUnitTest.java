@@ -1,4 +1,4 @@
-package org.example.masterlistas;
+package org.vchisvert.masterlistas;
 
 import org.junit.Test;
 

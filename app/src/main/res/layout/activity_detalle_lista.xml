@@ -24,7 +24,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/trabajo"
-                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_margin="3dp"
                 android:layout_marginLeft="36dp"
                 android:transitionName ="@string/transition_name_img"/>

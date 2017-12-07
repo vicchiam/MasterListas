@@ -1,11 +1,10 @@
-package org.example.masterlistas;
+package org.vchisvert.masterlistas;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 
 /**
  * Created by vicch on 08/11/2017.

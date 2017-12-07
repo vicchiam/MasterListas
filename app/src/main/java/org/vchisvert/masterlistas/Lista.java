@@ -1,4 +1,4 @@
-package org.example.masterlistas;
+package org.vchisvert.masterlistas;
 
 /**
  * Created by vicch on 08/11/2017.

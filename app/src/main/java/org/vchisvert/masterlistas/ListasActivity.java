@@ -1,16 +1,13 @@
-package org.example.masterlistas;
+package org.vchisvert.masterlistas;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -122,8 +119,11 @@ public class ListasActivity extends AppCompatActivity /*implements NavigationVie
             }
         });
 
-        Transition lista_enter = TransitionInflater.from(this) .inflateTransition(R.transition.transition_lista_enter);
-        getWindow().setEnterTransition(lista_enter);
+        Transition lista_enter = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            lista_enter = TransitionInflater.from(this) .inflateTransition(R.transition.transition_lista_enter);
+            getWindow().setEnterTransition(lista_enter);
+        }
 
     }
 

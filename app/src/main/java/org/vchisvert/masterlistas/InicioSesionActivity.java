@@ -1,4 +1,4 @@
-package org.example.masterlistas;
+package org.vchisvert.masterlistas;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
