@@ -7,6 +7,8 @@
     <!--Transicion-->
     <string name="transition_name_img">transition:IMG</string>
     <string name="transition_name_boton">transition:BUTTON</string>
+
+    
     <string name="iniciar_sesion">Log in</string>
     <string name="nombre_usuario">Username or mail</string>
     <string name="contrase_a">Password</string>

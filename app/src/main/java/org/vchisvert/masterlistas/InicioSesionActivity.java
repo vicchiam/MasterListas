@@ -2,20 +2,44 @@ package org.vchisvert.masterlistas;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class InicioSesionActivity extends AppCompatActivity {
+
+    private ArrayList bloqueo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio_sesion);
+
+
+        Button buttonBloqueo=(Button) findViewById(R.id.boton_facebook);
+        buttonBloqueo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                incrementaIndiceBloqueo(view);
+            }
+        });
+
+        Button buttonANR=(Button) findViewById(R.id.boton_google);
+        buttonANR.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                incrementaIndiceDeANR(view);
+            }
+        });
+
     }
 
     public void loguearCheckbox(View v) {
@@ -37,7 +61,12 @@ public class InicioSesionActivity extends AppCompatActivity {
 
     public void acceder (View view){
         Intent intent = new Intent(this, ListasActivity.class);
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        }
+        else{
+            startActivity(intent);
+        }
     }
 
     public void registro (View view){
@@ -55,6 +84,19 @@ public class InicioSesionActivity extends AppCompatActivity {
         usuario.setText("");
         contraseña.setText("");
         usuario.requestFocus();
+    }
+
+    public void incrementaIndiceBloqueo(View v){
+        bloqueo.add(null);
+    }
+
+    public void incrementaIndiceDeANR(View v){
+        try{
+            Thread.sleep(15000);;
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
 }
