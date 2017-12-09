@@ -48,7 +48,7 @@ public class InicioSesionActivity extends AppCompatActivity {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
 
-    public void mostrarContraseña(View v) {
+    public void mostrarContrasenya(View v) {
         EditText contraseña = (EditText) findViewById(R.id.contrasena);
         CheckBox mostrar = (CheckBox) findViewById(R.id.mostrar_contraseña);
         if (mostrar.isChecked()) {
