@@ -1,12 +1,17 @@
 package org.vchisvert.masterlistas;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,11 +22,15 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,22 +69,11 @@ public class ListasActivity extends AppCompatActivity /*implements NavigationVie
         // Crear un nuevo adaptador
         adapter = new ListaAdapter(this,items); recycler.setAdapter(adapter);
 
-        /*
-        recycler.addOnItemTouchListener(
-                new RecyclerItemClickListener(ListasActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View v, int position) {
-                        Toast.makeText(ListasActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-                    }
-                })
-        );
-        */
-
         recycler.addOnItemTouchListener(
                 new RecyclerItemClickListener(ListasActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View v, int position) {
                         Intent intent = new Intent(ListasActivity.this, DetalleListaActivity.class);
                         intent.putExtra("numeroLista", position);
-                        //startActivity(intent);
 
                         ActivityOptionsCompat options = ActivityOptionsCompat.
                                 makeSceneTransitionAnimation(ListasActivity.this,
@@ -93,20 +91,26 @@ public class ListasActivity extends AppCompatActivity /*implements NavigationVie
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Navigation Drawer
-        /*
-        DrawerLayout drawer = (DrawerLayout) findViewById( R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string. drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById( R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        */
-
-        // Navigation Drawer
         NavigationView navigationView = (NavigationView) findViewById( R.id.vNavigation);
         navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
             @Override public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Toast.makeText(getApplicationContext(),menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_compartir:
+                        compatirTexto("http://play.google.com/store/apps/details?id=" + getPackageName());
+                        break;
+                    case R.id.nav_compartir_lista:
+                        compatirTexto("LISTA DE LA COMPRA: patatas, leche, huevos. ---- "+ "Compartido por: http://play.google.com/store/apps/details?id="+ getPackageName());
+                        break;
+                    case R.id.nav_compartir_logo:
+                        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+                        compatirBitmap(bitmap, "Compartido por: "+ "http://play.google.com/store/apps/details?id="+getPackageName());
+                        break;
+                    case R.id.nav_compartir_desarrollador:
+                        compatirTexto( "https://play.google.com/store/apps/dev?id=7027410910970713274");
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
         });
@@ -125,42 +129,71 @@ public class ListasActivity extends AppCompatActivity /*implements NavigationVie
             getWindow().setEnterTransition(lista_enter);
         }
 
+        new RateMyApp(this).app_launched();
+
+        showCrossPromoDialog();
     }
-
-    /*
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.nav_1) {
-
-        }
-        else if (id == R.id.nav_2) {
-
-        }
-        else if (id == R.id.nav_3) {
-
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById( R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-    */
 
     @Override public void onBackPressed() {
-        /*DrawerLayout drawer = (DrawerLayout) findViewById( R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
-            super.onBackPressed();
-        }*/
         if (mDrawer.isMenuVisible()) {
             mDrawer.closeMenu();
         }
         else {
             super.onBackPressed();
         }
+    }
+
+    private void compatirTexto(String texto) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_TEXT, texto);
+        startActivity(Intent.createChooser(i, "Selecciona aplicación"));
+    }
+
+    private void compatirBitmap(Bitmap bitmap, String texto) {
+        // guardamos bitmap en el directorio cache
+        try {
+            File cachePath = new File(getCacheDir(), "images");
+            cachePath.mkdirs();
+            FileOutputStream s = new FileOutputStream(cachePath+"/image.png");
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, s); s.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Obtenemos la URI usando el FileProvider
+        File path = new File(getCacheDir(), "images");
+        File file = new File(path, "image.png");
+        Uri uri= FileProvider.getUriForFile(this, "org.vchisvert.masterlistas.fileprovider", file);
+        //Compartimos la URI
+        if (uri != null) {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            // temp permission for receiving app to read this file
+            i.setDataAndType(uri,getContentResolver().getType(uri));
+            i.putExtra(Intent.EXTRA_STREAM, uri);
+            i.putExtra(Intent.EXTRA_TEXT, texto);
+            startActivity(Intent.createChooser(i, "Selecciona aplicación"));
+        }
+    }
+
+    private void showCrossPromoDialog() {
+        final Dialog dialog = new Dialog(this, R.style.Theme_AppCompat);
+        dialog.setContentView(R.layout.dialog_crosspromotion);
+        dialog.setCancelable(true);
+        Button buttonCancel = (Button) dialog.findViewById(R.id.buttonCancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        Button boton = (Button) dialog.findViewById(R.id.buttonDescargar);
+        boton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse( "https://play.google.com/store/apps/details?" + "id=com.mimisoftware.emojicreatoremoticonosemoticones")));
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
 
