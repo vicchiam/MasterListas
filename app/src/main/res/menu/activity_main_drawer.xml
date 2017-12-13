@@ -6,7 +6,7 @@
         <item
             android:id="@+id/nav_1"
             android:icon="@android:drawable/ic_menu_gallery"
-            android:title=" Opción 1" />
+            android:title=" Video bonificado" />
         <item
             android:id="@+id/nav_2"
             android:icon="@android:drawable/ic_menu_gallery"
@@ -40,6 +40,10 @@
                 android:id="@+id/nav_compartir_desarrollador"
                 android:icon="@android:drawable/ic_menu_share"
                 android:title="Compartir Desarrollador" />
+            <item
+                android:id="@+id/nav_articulo_no_recurrente"
+                android:icon="@android:drawable/ic_menu_share"
+                android:title="Comprar artículo" />
         </menu>
     </item>
 </menu>

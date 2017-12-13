@@ -1,11 +1,18 @@
 package org.vchisvert.masterlistas;
 
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -25,8 +32,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.vending.billing.IInAppBillingService;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,7 +53,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListasActivity extends AppCompatActivity /*implements NavigationView.OnNavigationItemSelectedListener*/ {
+public class ListasActivity extends AppCompatActivity {
 
     private FlowingDrawer mDrawer;
 
@@ -44,17 +63,20 @@ public class ListasActivity extends AppCompatActivity /*implements NavigationVie
 
     private FloatingActionButton fab;
 
+    //AdMob
+    private AdView addView;
+    private InterstitialAd interstitialAd;
+    private RewardedVideoAd ad;
+
+    //Compras en App
+    private IInAppBillingService serviceBilling;
+    private ServiceConnection serviceConnection;
+    private final int INAPP_BILLING = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listas);
-
-        fab=(FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
-                Snackbar.make(view, "Se presionó el FAB", Snackbar.LENGTH_LONG) .show();
-            }
-        });
 
         //Inicializar los elementos
         List items = new ArrayList();
@@ -108,6 +130,14 @@ public class ListasActivity extends AppCompatActivity /*implements NavigationVie
                     case R.id.nav_compartir_desarrollador:
                         compatirTexto( "https://play.google.com/store/apps/dev?id=7027410910970713274");
                         break;
+                    case R.id.nav_1:
+                        if (ad.isLoaded()) {
+                            ad.show();
+                        }
+                        break;
+                    case R.id.nav_articulo_no_recurrente:
+                        comprarProducto();
+                        break;
                     default:
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_SHORT).show();
                 }
@@ -132,6 +162,73 @@ public class ListasActivity extends AppCompatActivity /*implements NavigationVie
         new RateMyApp(this).app_launched();
 
         showCrossPromoDialog();
+
+        //AdMod
+        addView=(AdView) findViewById(R.id.adView);
+        AdRequest adRequest=new AdRequest.Builder().addTestDevice(Params.ID_DISPOSITIVO_FISICO).build();
+        addView.loadAd(adRequest);
+
+        interstitialAd=new InterstitialAd(this);
+        interstitialAd.setAdUnitId(Params.ID_BLOQUE_INTERSTICIAL);
+        interstitialAd.loadAd(new AdRequest.Builder().addTestDevice(Params.ID_DISPOSITIVO_FISICO).build());
+
+        interstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed(){
+                interstitialAd.loadAd(new AdRequest.Builder()
+                        .addTestDevice(Params.ID_DISPOSITIVO_FISICO).build());
+            }
+        });
+
+        fab=(FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if(interstitialAd.isLoaded()){
+                    interstitialAd.show();
+                }
+                else {
+                    Toast.makeText(ListasActivity.this, "El Anuncio no esta disponible aun", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        ad = MobileAds.getRewardedVideoAdInstance(this);
+        ad.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
+                Toast.makeText(ListasActivity.this,"Video bonificado cargando",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {}
+
+            @Override
+            public void onRewardedVideoStarted() {}
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+                ad.loadAd(Params.ID_BLOQUE_BONIFICADO, new AdRequest.Builder()
+                        .addTestDevice(Params.ID_DISPOSITIVO_FISICO).build());
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+                Toast.makeText(ListasActivity.this, "onRewarded: moneda virtual: " + rewardItem.getType() + " aumento: " + rewardItem.getAmount(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {}
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {}
+
+        });
+
+        ad.loadAd(Params.ID_BLOQUE_BONIFICADO, new AdRequest.Builder(). addTestDevice(Params.ID_DISPOSITIVO_FISICO).build());
+
+        serviceConectInAppBilling();
+
     }
 
     @Override public void onBackPressed() {
@@ -196,5 +293,85 @@ public class ListasActivity extends AppCompatActivity /*implements NavigationVie
         dialog.show();
     }
 
+    public void serviceConectInAppBilling() {
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                serviceBilling = null;
+            }
+
+            @Override public void onServiceConnected(ComponentName name, IBinder service) {
+                serviceBilling=IInAppBillingService.Stub.asInterface(service);
+            }
+        };
+
+        Intent serviceIntent = new Intent( "com.android.vending.billing.InAppBillingService.BIND");
+        serviceIntent.setPackage("com.android.vending");
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    public void comprarProducto() {
+        if (serviceBilling != null) {
+            Bundle buyIntentBundle = null;
+            try {
+                buyIntentBundle= serviceBilling.getBuyIntent(3,getPackageName(), Params.ID_ARTICULO_NO_RECURRENTE, "inapp", Params.PAY_PASS);
+            }
+            catch (RemoteException e) {
+                e.printStackTrace();
+            }
+
+            PendingIntent pendingIntent = buyIntentBundle .getParcelable("BUY_INTENT");
+
+            try {
+                if(pendingIntent!=null) {
+                    startIntentSenderForResult(pendingIntent.getIntentSender(), INAPP_BILLING,new Intent(), 0, 0, 0);
+                }
+            }
+            catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            Toast.makeText(this, "InApp Billing service not available", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void backToBuy(String token){
+        if (serviceBilling != null) {
+            try {
+                int response = serviceBilling.consumePurchase( 3, getPackageName(), token);
+            }
+            catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case INAPP_BILLING: {
+                int responseCode = data.getIntExtra("RESPONSE_CODE", 0);
+                String purchaseData = data.getStringExtra("INAPP_PURCHASE_DATA");
+                String dataSignature = data.getStringExtra( "INAPP_DATA_SIGNATURE");
+                if (resultCode == RESULT_OK) {
+                    try {
+                        JSONObject jo = new JSONObject(purchaseData);
+                        String sku = jo.getString("productId");
+                        String developerPayload = jo.getString("developerPayload");
+                        String purchaseToken = jo.getString("purchaseToken");
+                        if (sku.equals(Params.ID_ARTICULO_NO_RECURRENTE)) {
+                            Toast.makeText(this,"Compra completada", Toast.LENGTH_LONG).show();
+                            backToBuy(purchaseToken);
+                        }
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
 
 }

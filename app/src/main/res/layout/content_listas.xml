@@ -1,133 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fitsSystemWindows="true">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
+            android:layout_height="200dp"
+            android:fitsSystemWindows="true">
 
-            <ImageView
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/pattern" />
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:toolbarId="@+id/toolbar">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="20dp"
-                android:text="@string/listas_disponiobles"
-                android:textColor="#fff"
-                android:textSize="14sp" />
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/detail_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/pattern" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Listas"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="20dp"
+                    android:text="@string/listas_disponiobles"
                     android:textColor="#fff"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
-            </android.support.v7.widget.Toolbar>
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/detail_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        </android.support.design.widget.CollapsingToolbarLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Listas"
+                        android:textColor="#fff"
+                        android:textSize="18sp" />
 
-    </android.support.design.widget.AppBarLayout>
+                </android.support.v7.widget.Toolbar>
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nsv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </android.support.design.widget.CollapsingToolbarLayout>
 
-        <!--
-        <FrameLayout
-            android:id="@+id/framely"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_margin="16dp"
-            android:background="#fff"
-            android:elevation="4dp"
-            app:layout_anchor="@+id/nsv"
-            app:layout_anchorGravity="bottom">
-        </FrameLayout>
-        -->
+        </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.RecyclerView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/reciclador"
-            android:scrollbars="vertical"
-            android:background="#ECEFF1" />
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </android.support.v4.widget.NestedScrollView>
+            <android.support.v7.widget.RecyclerView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/reciclador"
+                android:scrollbars="vertical"
+                android:background="#ECEFF1" />
 
-    <!--Boton flotante -->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+        </android.support.v4.widget.NestedScrollView>
+
+        <!--Boton flotante -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_anchor="@+id/nsv"
+            app:layout_anchorGravity="top|end"
+            app:elevation="6dp"
+            app:rippleColor="#616161"
+            android:clickable="true"
+            android:src="@drawable/fab_plus"
+            android:transitionName ="@string/transition_name_boton"/>
+
+    </android.support.design.widget.CoordinatorLayout >
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_anchor="@+id/nsv"
-        app:layout_anchorGravity="top|end"
-        app:elevation="6dp"
-        app:rippleColor="#616161"
-        android:clickable="true"
-        android:src="@drawable/fab_plus"
-        android:transitionName ="@string/transition_name_boton"/>
+        app:adSize="SMART_BANNER"
+        app:adUnitId="ca-app-pub-4358904687418644/5399352955" />
 
-    <!-- Icono imagen
-     android:src="@drawable/ic_add_white_24dp" -->
-
-    <!--Crear Superficies
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="32dp"
-        android:background="#fff"
-        android:elevation="4dp">
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="16dp"
-        android:background="#ccc"
-        android:elevation="2dp">
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="4dp"
-        android:background="#aaa"
-        android:elevation="1dp">
-    </FrameLayout> -->
-
-</android.support.design.widget.CoordinatorLayout >
+</LinearLayout>

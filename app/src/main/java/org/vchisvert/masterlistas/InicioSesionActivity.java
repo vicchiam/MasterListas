@@ -12,6 +12,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.ArrayList;
 
 public class InicioSesionActivity extends AppCompatActivity {
@@ -39,6 +41,8 @@ public class InicioSesionActivity extends AppCompatActivity {
                 incrementaIndiceDeANR(view);
             }
         });
+
+        MobileAds.initialize(this,Params.ID_APLICACION);
 
     }
 
