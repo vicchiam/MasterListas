@@ -1,5 +1,6 @@
 package org.vchisvert.masterlistas;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -137,6 +138,15 @@ public class ListasActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_articulo_no_recurrente:
                         comprarProducto();
+                        break;
+                    case R.id.nav_susbripcion:
+                        comprarSuscripcion(ListasActivity.this);
+                        break;
+                    case R.id.nav_consulta_inapps_disponibles:
+                        getInAppInformationOfProducts();
+                        break;
+                    case R.id.nav_consulta_subs_disponibles:
+                        getSubscriptionInformationOfProducts();
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_SHORT).show();
@@ -302,6 +312,8 @@ public class ListasActivity extends AppCompatActivity {
 
             @Override public void onServiceConnected(ComponentName name, IBinder service) {
                 serviceBilling=IInAppBillingService.Stub.asInterface(service);
+                checkPurchasedInAppProducts();
+                checkPurchasedSubscriptions();
             }
         };
 
@@ -347,6 +359,146 @@ public class ListasActivity extends AppCompatActivity {
         }
     }
 
+    public void comprarSuscripcion(Activity activity) {
+        if (serviceBilling != null) {
+            Bundle buyIntentBundle = null;
+            try {
+                buyIntentBundle = serviceBilling.getBuyIntent(3, activity .getPackageName(), Params.ID_SUBSCRIPCION, "subs", Params.PAY_PASS);
+            }
+            catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            assert buyIntentBundle != null;
+            PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
+            try {
+                assert pendingIntent != null;
+                activity.startIntentSenderForResult(pendingIntent .getIntentSender(), INAPP_BILLING, new Intent(), 0, 0, 0);
+            }
+            catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            Toast.makeText(activity, "Servicio de suscripción no disponible", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void getInAppInformationOfProducts(){
+        ArrayList<String> skuList = new ArrayList<String> ();
+        skuList.add(Params.ID_ARTICULO_NO_RECURRENTE);
+        Bundle querySkus = new Bundle();
+        querySkus.putStringArrayList("ITEM_ID_LIST", skuList);
+        Bundle skuDetails;
+        ArrayList<String> responseList;
+        try {
+            skuDetails = serviceBilling.getSkuDetails(3, getPackageName(), "inapp", querySkus);
+            int response = skuDetails.getInt("RESPONSE_CODE");
+            if (response == 0) {
+                responseList = skuDetails.getStringArrayList("DETAILS_LIST");
+                assert responseList != null;
+                for (String thisResponse : responseList) {
+                    JSONObject object = new JSONObject(thisResponse);
+                    String ref = object.getString("productId");
+                    System.out.println("InApp Reference: " + ref);
+                    String price = object.getString("price");
+                    System.out.println("InApp Price: " + price);
+                }
+            }
+        }
+        catch (RemoteException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getSubscriptionInformationOfProducts(){
+        ArrayList<String> skuListSubs = new ArrayList<String> ();
+        skuListSubs.add(Params.ID_SUBSCRIPCION);
+        Bundle querySkusSubs = new Bundle();
+        querySkusSubs.putStringArrayList("ITEM_ID_LIST", skuListSubs);
+        Bundle skuDetailsSubs;
+        ArrayList<String> responseListSubs;
+        try{
+            skuDetailsSubs = serviceBilling.getSkuDetails( 3,getPackageName(),"subs",querySkusSubs);
+            int responseSubs = skuDetailsSubs.getInt("RESPONSE_CODE"); System.out.println(responseSubs);
+            if (responseSubs == 0) {
+                responseListSubs = skuDetailsSubs.getStringArrayList( "DETAILS_LIST");
+                assert responseListSubs != null;
+                for (String thisResponse : responseListSubs) {
+                    JSONObject object = new JSONObject(thisResponse);
+                    String ref = object.getString("productId");
+                    System.out.println("Subscription Reference: " + ref);
+                    String price = object.getString("price");
+                    System.out.println("Subscription Price: " + price);
+                }
+            }
+        }
+        catch (RemoteException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkPurchasedInAppProducts() {
+        Bundle ownedItemsInApp = null;
+        if (serviceBilling != null) {
+            try {
+                ownedItemsInApp = serviceBilling.getPurchases(3, getPackageName(), "inapp", null);
+            }
+            catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            int response = ownedItemsInApp.getInt("RESPONSE_CODE");
+            System.out.println(response);
+            if (response == 0) {
+                ArrayList<String> ownedSkus = ownedItemsInApp .getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+                ArrayList<String> purchaseDataList = ownedItemsInApp .getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+                ArrayList<String> signatureList = ownedItemsInApp .getStringArrayList("INAPP_DATA_SIGNATURE_LIST");
+                String continuationToken = ownedItemsInApp .getString("INAPP_CONTINUATION_TOKEN");
+                for (int i = 0; i < purchaseDataList.size(); ++i) {
+                    String purchaseData = purchaseDataList.get(i);
+                    String signature = signatureList.get(i);
+                    String sku = ownedSkus.get(i);
+                    System.out.println("Inapp Purchase data: " + purchaseData);
+                    System.out.println("Inapp Signature: " + signature);
+                    System.out.println("Inapp Sku: " + sku);
+                    if (sku.equals(Params.ID_ARTICULO_NO_RECURRENTE)) {
+                        Toast.makeText(this, "Inapp comprado: " + sku + "el dia " + purchaseData, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkPurchasedSubscriptions() {
+        Bundle ownedItemsInApp = null;
+        if (serviceBilling != null) {
+            try {
+                ownedItemsInApp = serviceBilling.getPurchases( 3, getPackageName(), "subs", null);
+            }
+            catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            int response = ownedItemsInApp.getInt("RESPONSE_CODE");
+            System.out.println(response);
+            if (response == 0) {
+                ArrayList<String> ownedSkus = ownedItemsInApp .getStringArrayList("INAPP_PURCHASE_ITEM_LIST");
+                ArrayList<String> purchaseDataList = ownedItemsInApp .getStringArrayList("INAPP_PURCHASE_DATA_LIST");
+                ArrayList<String> signatureList = ownedItemsInApp .getStringArrayList("INAPP_DATA_SIGNATURE_LIST");
+                String continuationToken = ownedItemsInApp .getString("INAPP_CONTINUATION_TOKEN");
+                for (int i = 0; i < purchaseDataList.size(); ++i) {
+                    String purchaseData = purchaseDataList.get(i);
+                    String signature = signatureList.get(i);
+                    String sku = ownedSkus.get(i);
+                    System.out.println("Suscription Purchase data: " + purchaseData);
+                    System.out.println("Suscription Signature: " + signature);
+                    System.out.println("Suscription Sku: " + sku);
+                    if (sku.equals(Params.ID_SUBSCRIPCION)) {
+                        Toast.makeText(this, "Suscrito correctamente: " + sku + "el dia " + purchaseData, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -364,6 +516,9 @@ public class ListasActivity extends AppCompatActivity {
                         if (sku.equals(Params.ID_ARTICULO_NO_RECURRENTE)) {
                             Toast.makeText(this,"Compra completada", Toast.LENGTH_LONG).show();
                             backToBuy(purchaseToken);
+                        }
+                        else if (sku.equals(Params.ID_SUBSCRIPCION)) {
+                            Toast.makeText(this, "Suscrición correcta", Toast.LENGTH_LONG).show();
                         }
                     }
                     catch (JSONException e) {

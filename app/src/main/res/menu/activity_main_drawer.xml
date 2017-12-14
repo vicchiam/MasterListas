@@ -44,6 +44,19 @@
                 android:id="@+id/nav_articulo_no_recurrente"
                 android:icon="@android:drawable/ic_menu_share"
                 android:title="Comprar artículo" />
+            <item
+                android:id="@+id/nav_susbripcion"
+                android:icon="@android:drawable/ic_menu_share"
+                android:title="Comprar Suscripción" />
+            <item
+                android:id="@+id/nav_consulta_inapps_disponibles"
+                android:icon="@android:drawable/ic_menu_share"
+                android:title="Artículos disponibles" />
+            <item
+                android:id="@+id/nav_consulta_subs_disponibles"
+                android:icon="@android:drawable/ic_menu_share"
+                android:title="Suscripciones disponibles" />
+
         </menu>
     </item>
 </menu>
